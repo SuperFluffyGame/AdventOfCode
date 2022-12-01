@@ -2,8 +2,8 @@ const INPUT: &str = include_str!("../input.txt");
 
 fn main() {
     let mut elves: Vec<u32> = INPUT
-        .split("\n\n")
-        .map(|v| v.split('\n').map(|v| v.parse::<u32>().unwrap()).sum())
+        .split("\r\n\r\n")
+        .map(|v| v.split("\r\n").map(|v| v.parse::<u32>().unwrap()).sum())
         .collect();
     elves.sort();
     let top = elves[elves.len() - 1];
