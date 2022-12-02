@@ -5,7 +5,7 @@ const input = fs.readFileSync("./input.txt").toString();
 const elves = input.split("\r\n\r\n").map(v =>
     v
         .split("\r\n")
-        .map(v => parseInt(v))
+        .map(parseInt)
         .reduce((a, b) => a + b)
 );
 
