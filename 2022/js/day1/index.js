@@ -5,11 +5,10 @@ const input = fs.readFileSync("./input.txt").toString();
 const elves = input.split("\r\n\r\n").map(v =>
     v
         .split("\r\n")
-        .map(parseInt)
+        .map(v => +v)
         .reduce((a, b) => a + b)
 );
-
-const top = elves.reduce((a, b) => (a > b ? a : b));
+const top = elves.reduce((a, b) => Math.max(a, b));
 
 const topThree = elves
     .sort((a, b) => b - a)
