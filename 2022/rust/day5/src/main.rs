@@ -15,28 +15,75 @@ fn part1(input: &str) -> String {
     let (row_idx, num_row) = input
         .lines()
         .enumerate()
-        .find(|(idx, line)| line.starts_with(" 1"))
+        .find(|(_idx, line)| line.starts_with(" 1"))
         .unwrap();
     let num_stacks = num_row[(num_row.len() - 2)..(num_row.len() - 1)]
         .parse::<usize>()
         .unwrap();
 
-    let mut stacks = vec![String::new(); num_stacks];
+    let mut stacks = vec![vec![]; num_stacks];
 
     let stack_lines = input.lines().take(row_idx).collect::<Vec<_>>();
+    dbg!(&stack_lines);
+    stack_lines.iter().enumerate().for_each(|(i, line)| {
+        for stack_i in 0..num_stacks {
+            let str_index = stack_i * 4;
 
-    stack_lines.iter().for_each(|line| {
-        for i in 0..num_stacks {
-            let str_index = i / 4;
-            dbg!(str_index);
-            dbg!(line);
             let char = line.chars().nth(str_index + 1).unwrap();
-            stacks[i].push(char);
+            if !char.is_whitespace() {
+                stacks[stack_i].push(char);
+            }
         }
     });
+    stacks.iter_mut().for_each(|stack| {
+        stack.reverse();
+    });
 
-    dbg!(stacks);
-    todo!()
+    input
+        .lines()
+        .skip(row_idx + 2)
+        .enumerate()
+        .map(|(i, line)| {
+            dbg!(line);
+
+            let o = (
+                line.chars()
+                    .skip(5)
+                    .take_while(|c| c.is_numeric())
+                    .collect::<String>()
+                    .parse::<usize>()
+                    .unwrap(),
+                {
+                    let str = line
+                        .chars()
+                        .skip(12)
+                        .take_while(|c| c.is_numeric())
+                        .collect::<String>();
+                    dbg!(&str);
+                    str
+                }
+                .parse::<usize>()
+                .unwrap_or_else(|e| panic!("{}", i)),
+                line.chars()
+                    .skip(17)
+                    .take_while(|c| c.is_numeric())
+                    .collect::<String>()
+                    .parse::<usize>()
+                    .unwrap(),
+            );
+            dbg!(&o);
+            o
+        })
+        .for_each(|mov| {
+            let (num, from, to) = mov;
+
+            for _ in 0..num {
+                let v = stacks[from - 1].pop().unwrap();
+                stacks[to - 1].push(v);
+            }
+        });
+
+    stacks.iter().map(|stack| stack.last().unwrap()).collect()
 }
 
 fn part2(input: &str) -> u32 {
@@ -44,6 +91,6 @@ fn part2(input: &str) -> u32 {
 }
 
 fn main() {
-    println!("Part 1: {}", part1(TEST_INPUT));
+    println!("Part 1: {}", part1(INPUT));
     println!("Part 2: {}", part2(INPUT));
 }

@@ -8,7 +8,7 @@ const TEST_INPUT: &str = "2-4,6-8
 const INPUT: &str = include_str!("../input.txt");
 
 fn part1(input: &str) -> u32 {
-    input.lines().fold(0, |mut total, line| {
+    input.lines().fold(0, |total, line| {
         let ranges = line
             .split(',')
             .map(|str| {
@@ -21,13 +21,14 @@ fn part1(input: &str) -> u32 {
         let range1 = &ranges[0];
         let range2 = &ranges[1];
 
-        if (range1[0] >= range2[0] && range1[1] <= range2[1])
-            || (range2[0] >= range1[0] && range2[1] <= range1[1])
-        {
-            total += 1;
-        }
-
         total
+            + if (range1[0] >= range2[0] && range1[1] <= range2[1])
+                || (range2[0] >= range1[0] && range2[1] <= range1[1])
+            {
+                1
+            } else {
+                0
+            }
     })
 }
 
