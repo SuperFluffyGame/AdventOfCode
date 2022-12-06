@@ -24,15 +24,19 @@ fn part1(input: &str) -> String {
     let mut stacks = vec![vec![]; num_stacks];
 
     let stack_lines = input.lines().take(row_idx).collect::<Vec<_>>();
-    stack_lines.iter().enumerate().for_each(|(i, line)| {
-        for stack_i in 0..num_stacks {
-            let str_index = stack_i * 4;
+    stack_lines.iter().enumerate().for_each(|(_i, line)| {
+        stacks
+            .iter_mut()
+            .enumerate()
+            .take(num_stacks)
+            .for_each(|(stack_i, stack)| {
+                let str_index = stack_i * 4;
 
-            let char = line.chars().nth(str_index + 1).unwrap();
-            if !char.is_whitespace() {
-                stacks[stack_i].push(char);
-            }
-        }
+                let char = line.chars().nth(str_index + 1).unwrap();
+                if !char.is_whitespace() {
+                    stack.push(char);
+                }
+            })
     });
     stacks.iter_mut().for_each(|stack| {
         stack.reverse();
@@ -96,15 +100,19 @@ fn part2(input: &str) -> String {
     let mut stacks = vec![vec![]; num_stacks];
 
     let stack_lines = input.lines().take(row_idx).collect::<Vec<_>>();
-    stack_lines.iter().enumerate().for_each(|(i, line)| {
-        for stack_i in 0..num_stacks {
-            let str_index = stack_i * 4;
+    stack_lines.iter().enumerate().for_each(|(_i, line)| {
+        stacks
+            .iter_mut()
+            .enumerate()
+            .take(num_stacks)
+            .for_each(|(stack_i, stack)| {
+                let str_index = stack_i * 4;
 
-            let char = line.chars().nth(str_index + 1).unwrap();
-            if !char.is_whitespace() {
-                stacks[stack_i].push(char);
-            }
-        }
+                let char = line.chars().nth(str_index + 1).unwrap();
+                if !char.is_whitespace() {
+                    stack.push(char);
+                }
+            })
     });
     stacks.iter_mut().for_each(|stack| {
         stack.reverse();
